@@ -17,3 +17,17 @@
 每次处理文件会生成一个.log.md文件.
 
 为了避免误导入,解析完成后**不会**自动导入结果文件.
+
+## 感谢
+
+使用fast-glob来遍历markdown文件夹.
+
+使用magic-string进行文本处理.
+
+## 捐助
+
+如果你觉得它有用,可以请我们[喝一杯咖啡](https://afdian.net/a/leolee9086)
+
+![](https://ccds-1300128285.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E6%94%B6%E6%AC%BE%E7%A0%811.jpg)
+
+![](https://ccds-1300128285.cos.ap-guangzhou.myqcloud.com/%E6%94%AF%E4%BB%98%E5%AE%9D%E6%94%B6%E6%AC%BE%E7%A0%811.jpg)
