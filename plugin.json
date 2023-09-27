@@ -1,8 +1,8 @@
 {
     "name": "importHelper",
-    "author": "Vanessa",
-    "url": "https://github.com/siyuan-note/plugin-sample",
-    "version": "0.2.0",
+    "author": "椽承设计",
+    "url": "https://github.com/leolee9086/importHelper",
+    "version": "0.1.0",
     "minAppVersion": "2.10.0",
     "backends": ["windows", "linux", "darwin"],
     "frontends": ["desktop"],
@@ -11,7 +11,7 @@
       "zh_CN": "导入助手"
     },
     "description": {
-      "default": "This is a plugin sample",
+      "default": "Help import markdown folders with wiki links, converting wiki links to markdown links",
       "zh_CN": "帮助导入带有wiki链接的markdown文件夹"
     },
     "readme": {
