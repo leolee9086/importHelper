@@ -1,0 +1,15 @@
+{
+  "name": "importhelper",
+  "version": "1.0.0",
+  "description": "安装之后编辑器的标题菜单中的插件项目会出现“导出多图”项，点击即可，其余使用方法与软件自带的导出图片功能基本一样。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fast-glob": "^3.3.1",
+    "magic-string": "^0.30.3"
+  }
+}
