@@ -27,6 +27,7 @@ class importHelper extends Plugin {
                     properties: ['openDirectory']
                 }).then(result => {
                     if (!result.canceled) {
+                        console.log(path)
                         const folderPath = result.filePaths[0]; // 获取选中的文件夹路径
                         const normalizedPath = path.normalize(folderPath).replace(/\\/g,'/');
                         const targetFolderPath = path.join(normalizedPath, '..', path.basename(normalizedPath) + '_prepared');
@@ -36,10 +37,16 @@ class importHelper extends Plugin {
                         let list = glob.sync("**", { stats: true, cwd: normalizedPath });
                         let logFilePath = path.join(targetFolderPath, `prepare${Date.now()}.log.md`);
                         let logFile = fs.createWriteStream(logFilePath, { flags: 'a' });
+                        for (let i = 0, len = list.length; i < len; i++){
+                            let item = list[i];
+                            item.filePath = path.join(normalizedPath, item.path);
+                            item.targetFilePath = path.join(targetFolderPath, item.path);
+                        }
                         for (let i = 0, len = list.length; i < len; i++) {
                             let item = list[i];
                             item.filePath = path.join(normalizedPath, item.path);
                             let targetFilePath = path.join(targetFolderPath, item.path);
+                            item.targetFilePath=targetFilePath
                             try {
                                 if (item.name.endsWith(".md")) {
                                     item.markdown = fs.readFileSync(item.filePath, "utf-8");
@@ -60,6 +67,7 @@ class importHelper extends Plugin {
                                 }
                                 logFile.write(`Processed file: ${item.filePath}\n`);
                             } catch (err) {
+                                console.log(err)
                                 logFile.write(`Error processing file: ${item.filePath}\n`,err,err.stack);
                                 logFile.write(`Error message: ${err.message}\n`,err,err.stack);
                             }
@@ -125,10 +133,10 @@ function 解析一行文本(line, list, item) {
         };
     }
     wikiMatches.forEach(wikilink => {
-        let {start, end, alias, name, fileName, query, path} = parseWikiLink(wikilink, line, list);
+        let {start, end, alias, name, fileName, query, path} = parseWikiLink(wikilink, line, list,item.targetFilePath);
         links.push({
-            href: path,
-            query: query,
+            href:path,
+            query:query,
             hrefName: fileName,
             alias: alias
         });
@@ -140,7 +148,7 @@ function 解析一行文本(line, list, item) {
     };
 }
 
-function parseWikiLink(wikilink, line, list) {
+function parseWikiLink(wikilink, line, list, currentFilePath) {
     let start = line.indexOf(wikilink);
     let end = start + wikilink.length;
     let alias = wikilink.split("|")[1];
@@ -162,6 +170,8 @@ function parseWikiLink(wikilink, line, list) {
     if ((fileName.indexOf("\.") < 0)) {
         fileName = fileName + '.md';
     }
+    fileName = fileName;
+    query = query;
     let linktarget = list.find((e) => {
         return e.path == fileName;
     });
@@ -170,6 +180,9 @@ function parseWikiLink(wikilink, line, list) {
             return e.name == fileName;
         });
     }
-    let path = linktarget ? linktarget.path : fileName;
-    return {start, end, alias, name, fileName, query, path};
+    let _path = linktarget ? linktarget.targetFilePath : fileName;
+    // Convert the path to a relative path
+    _path = path.relative(path.dirname(currentFilePath), _path);
+
+    return {start, end, alias, name, fileName, query, path:_path};
 }
