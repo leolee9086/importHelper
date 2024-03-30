@@ -123,7 +123,8 @@ function 解析一行文本(line, list, item) {
             links: links,
         };
     }
-    const regexWikiGlobal = /\[\[([^\]]*)\]\]/g;
+    // const regexWikiGlobal = /\[\[([^\]]*)\]\]/g;
+    const regexWikiGlobal = /\[\[([^\].]*\.[^\]]*)\]\]/g;
     let wikiMatches = line.match(regexWikiGlobal);
 
     if (!wikiMatches) {
