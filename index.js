@@ -133,14 +133,16 @@ function 解析一行文本(line, list, item) {
         };
     }
     wikiMatches.forEach(wikilink => {
-        let {start, end, alias, name, fileName, query, path} = parseWikiLink(wikilink, line, list,item.targetFilePath);
-        links.push({
-            href:path,
-            query:query,
-            hrefName: fileName,
-            alias: alias
-        });
-        magicline.overwrite(start, end, `[${alias}](${path}${query})`);
+        let {start, end, alias, name, fileName, query, path, needTrans} = parseWikiLink(wikilink, line, list,item.targetFilePath);
+        if (needTrans) {
+            links.push({
+                href:path,
+                query:query,
+                hrefName: fileName,
+                alias: alias
+            });
+            magicline.overwrite(start, end, `[${alias}](${path}${query})`);
+        }
     });
     return {
         markdown: magicline.toString(),
@@ -149,6 +151,7 @@ function 解析一行文本(line, list, item) {
 }
 
 function parseWikiLink(wikilink, line, list, currentFilePath) {
+    let needTrans = true;
     let start = line.indexOf(wikilink);
     let end = start + wikilink.length;
     let alias = wikilink.split("|")[1];
@@ -169,6 +172,8 @@ function parseWikiLink(wikilink, line, list, currentFilePath) {
     let query = name.replace(fileName, "");
     if ((fileName.indexOf("\.") < 0)) {
         fileName = fileName + '.md';
+        // 忽略markdown文件翻译
+        needTrans = false;
     }
     fileName = fileName;
     query = query;
@@ -184,5 +189,5 @@ function parseWikiLink(wikilink, line, list, currentFilePath) {
     // Convert the path to a relative path
     _path = path.relative(path.dirname(currentFilePath), _path);
 
-    return {start, end, alias, name, fileName, query, path:_path};
+    return {start, end, alias, name, fileName, query, path:_path, needTrans};
 }
