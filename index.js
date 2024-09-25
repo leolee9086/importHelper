@@ -123,8 +123,9 @@ function 解析一行文本(line, list, item) {
             links: links,
         };
     }
-    // const regexWikiGlobal = /\[\[([^\]]*)\]\]/g;
-    const regexWikiGlobal = /\[\[([^\].]*\.[^\]]*)\]\]/g;
+    //这里之后会提供链接样式的配置,文件路径的匹配使用needTrans进行判断
+    //https://github.com/leolee9086/importHelper/pull/2
+    const regexWikiGlobal = /\[\[([^\]]*)\]\]/g;
     let wikiMatches = line.match(regexWikiGlobal);
 
     if (!wikiMatches) {

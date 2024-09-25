@@ -2,8 +2,8 @@
     "name": "importHelper",
     "author": "椽承设计",
     "url": "https://github.com/leolee9086/importHelper",
-    "version": "0.1.1",
-    "minAppVersion": "2.10.0",
+    "version": "0.1.2",
+    "minAppVersion": "3.0.2",
     "backends": ["windows", "linux", "darwin"],
     "frontends": ["desktop"],
     "displayName": {
